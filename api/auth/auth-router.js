@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const secret = require("./secrets")
 const requiredError=(m) => ({status:400,message:`username and password required ${m}`});
 router.post('/register', 
-  body("username").isString().withMessage(requiredError("username isstring")).trim().isLength({min:2}).withMessage(requiredError("username islength")).custom(async(value,{req})=>{
+  body("username").isString().withMessage(requiredError("username isstring")).trim().isLength({min:1}).withMessage(requiredError("username islength")).custom(async(value,{req})=>{
     const rows = await db("users").where({username:value});
     return new Promise((resolve,reject)=>{
       if(rows.length===0){
@@ -17,7 +17,7 @@ router.post('/register',
       }
     })
   }).withMessage({status:400,message:"username taken"}),
-  body("password").isString().withMessage(requiredError("password is string")).trim().isLength({min:6}).withMessage(requiredError("password is length")),
+  body("password").isString().withMessage(requiredError("password is string")).trim().isLength({min:1}).withMessage(requiredError("password is length")),
   async(req, res, next) => {
     try{
       const errors = validationResult(req);
@@ -64,7 +64,7 @@ router.post('/register',
 
 router.post('/login', 
   body("username").isString().withMessage(requiredError("login username is string")).trim()
-  .isLength({min:2})
+  .isLength({min:1}).withMessage(requiredError("login username is length"))
   .custom(async(value,{req})=>{
     const user = await db("users").where({username:value}).first();
     req.user = user;
@@ -75,7 +75,7 @@ router.post('/login',
     return valid?Promise.resolve():Promise.reject({status:401,message:`invalid credentials`});
   }),
 
-  body("password").isString().withMessage(requiredError("login password isstring")).trim().isLength({min:2}).withMessage(requiredError("login password is length")),
+  body("password").isString().withMessage(requiredError("login password isstring")).trim().isLength({min:1}).withMessage(requiredError("login password is length")),
 
   (req, res, next) => {
     const errors = validationResult(req);
