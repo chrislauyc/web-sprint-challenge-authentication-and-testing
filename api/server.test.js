@@ -68,9 +68,17 @@ describe("Server Endpoint Tests",()=>{
   });
   describe("[POST] /api/auth/login",()=>{
     test("responds with 400 if invalid body",async()=>{
-      let invalid = {username:"",password:""};
+      let invalid = {username:"chris"};
       let res = await request(server).post("/api/auth/login").send(invalid);
       expect(res.status).toBe(400);
+      expect(res.body.message).toEqual("username and password required");
+      invalid = {password:"12334534"};
+      res = await request(server).post("/api/auth/login").send(invalid);
+      expect(res.status).toBe(400);
+      expect(res.body.message).toEqual("username and password required");
+      invalid = {username:"",password:""};
+      expect(res.status).toBe(400);
+      expect(res.body.message).toEqual("username and password required");
 
       // invalid = {username:"chris",password:""};
       // res = await request(server).post("/api/auth/login").send(invalid);
