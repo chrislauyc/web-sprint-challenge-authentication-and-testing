@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {body,checkSchema,validationResult} = require("express-validator");
+const {body,validationResult} = require("express-validator");
 const bcrypt = require("bcryptjs");
 const db = require('../../data/dbConfig');
 const jwt = require("jsonwebtoken");
@@ -63,7 +63,7 @@ router.post('/register',
 
 
 router.post('/login', 
-  body("username").isString().withMessage(requiredError).trim()
+  body("username").isString().withMessage(requiredError+"isstring").trim()
   .isLength({min:2})
   .custom(async(value,{req})=>{
     const user = await db("users").where({username:value}).first();
@@ -75,7 +75,7 @@ router.post('/login',
     return valid?Promise.resolve():Promise.reject({status:401,message:`invalid credentials`});
   }),
 
-  body("password").isString().withMessage(requiredError).trim().isLength({min:2}).withMessage(requiredError),
+  body("password").isString().withMessage(requiredError+"password isstring").trim().isLength({min:2}).withMessage(requiredError+"password islength"),
 
   (req, res, next) => {
     const errors = validationResult(req);
