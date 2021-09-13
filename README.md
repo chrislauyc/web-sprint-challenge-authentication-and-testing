@@ -55,6 +55,36 @@ Your finished project must include all of the following requirements (further in
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics.
 
 1. Differences between using _sessions_ or _JSON Web Tokens_ for authentication.
+
+A session is stored inside the server and a session id is attached to the header of the http requests and responses, and the client is storing the session id. 
+
+A session allows the server to have full control over the authentication
+However, it is also susceptable to hacking since the session id is attached automatically to the header. 
+
+Extra security is added to protect from cross-origin requests but it also makes it difficult for mobile apps. 
+
+A json web token is signed with a secret string in the server and sent to the client. The client will then need to attach the token in the header and the server will verify its validity. 
+
+A downside of this is that the client controls the logging out since the client can be authenticated as long as a token is stored. 
+
+cross-origin requests is much easier because as long as a valid token is sent, the user will be authenticated in the server
+
 2. What does `bcryptjs` do to help us store passwords in a secure manner?
+
+it hashes the password so that a user passwords are not immediately compromised if the database is hacked. Hashing is a one way function and the hashed password can only be obtained through guessing. This will take too much time for hackers to do.
+
 3. How are unit tests different from integration and end-to-end testing?
+
+Unit tests are implementation specific and they are the tests on functions.
+
+Integration tests are for testing how each component of the software communicate with each other.
+
+End-to-end is testing the entire application, often by simulating end-users' actions
+
 4. How does _Test Driven Development_ change the way we write applications and tests?
+
+It is defined as the process of writing tests, writing code to pass the tests, then refactor the code, and finally passing the tests again. 
+
+Refactoring is easier because bugs can be caught with tests
+
+starting with the end in mind so that the desired behavior can be clearly defined before the implementation of the code.
